@@ -76,5 +76,17 @@ class NoteTakingApp{
    static void createNotes(){// Webster your task is here 
         // Fill this function with working code to create notes remember we are storing the data in a collection
    }
+
+   static void readNotes(){ // Webster here again}
+
+   static void updateNotes(){// Paul your task is here
+        // Fill this function with working code
+   }
+   
+   static void adminPanel(){ //Ntala your task is here
+       // fill this function
+   }
+   
+   
 }
 
