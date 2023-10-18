@@ -1,6 +1,8 @@
+import java.util.Random;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
-public class RegistrationApp {
+public class NoteTakingRegistrationWithOTP {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -8,7 +10,8 @@ public class RegistrationApp {
             System.out.println("1. Register");
             System.out.println("2. Exit");
             System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
+
+            int choice = getUserChoice(scanner);
 
             switch (choice) {
                 case 1:
@@ -17,8 +20,20 @@ public class RegistrationApp {
                 case 2:
                     System.out.println("Exiting registration.");
                     System.exit(0);
+                    break;
                 default:
                     System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
+    private static int getUserChoice(Scanner scanner) {
+        while (true) {
+            try {
+                return scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number (1 or 2).");
+                scanner.nextLine(); // Consume the invalid input
             }
         }
     }
@@ -26,21 +41,41 @@ public class RegistrationApp {
     private static void registerUser(Scanner scanner) {
         System.out.print("Enter a username: ");
         String username = scanner.next();
+        System.out.print("Enter an email address: ");
+        String email = scanner.next();
         System.out.print("Enter a password: ");
         String password = scanner.next();
 
-       
-        boolean registrationSuccess = storeUserInformation(username, password);
+        // Simulate sending an OTP code via email
+        int otpCode = generateOTP();
+        System.out.println("An OTP code has been sent to your email.");
 
-        if (registrationSuccess) {
-            System.out.println("Registration successful!");
+        // Simulate user input of the OTP code
+        System.out.print("Enter the OTP code: ");
+        int userEnteredOTP = getUserChoice(scanner);
+
+        if (userEnteredOTP == otpCode) {
+            // You should implement a method to store the user information in your data storage system.
+            boolean registrationSuccess = storeUserInformation(username, email, password);
+
+            if (registrationSuccess) {
+                System.out.println("Registration successful!");
+            } else {
+                System.out.println("Registration failed. Please try a different username or email.");
+            }
         } else {
-            System.out.println("Registration failed. Please try a different username.");
+            System.out.println("OTP verification failed. Please enter the correct OTP code.");
         }
     }
 
-    private static boolean storeUserInformation(String username, String password) {
+    private static int generateOTP() {
+        // Simulate OTP code generation (a random 6-digit number)
+        return 100000 + new Random().nextInt(900000);
+    }
 
+    private static boolean storeUserInformation(String username, String email, String password) {
+        // In a real application, you would save user information to your database.
+        // For this example, we simply return true to simulate success.
         return true;
     }
 }
