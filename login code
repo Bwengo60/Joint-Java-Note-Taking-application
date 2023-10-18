@@ -1,0 +1,60 @@
+import java.util.Scanner;
+
+class NoteTakingApp {
+    public static void main(String[] Args) {
+        System.out.println("Hello! Welcome to our note-taking app!");
+        boolean start = true;
+        Scanner scanner = new Scanner(System.in);
+
+        while (start) {
+            System.out.println("1. Login\n2. Register\n3. Quit\n\nPlease login or register to proceed: ");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    System.out.println("Logged in!");
+                    if (login(scanner)) {
+                        home();
+                    }
+                    break;
+                case "2":
+                    System.out.println("Registered");//Replace me with a working registration function.
+                    break;
+                case "3":
+                    System.out.println("Bye!");
+                    start = false;
+                    break;
+                default:
+                    System.out.println("\nPlease enter a valid command!\n");
+            }
+        }
+    }
+
+    static boolean login(Scanner scanner) {
+        boolean isLoggedIn = false;
+        while (!isLoggedIn) {
+            System.out.println("Enter your username: ");
+            String username = scanner.nextLine();
+            System.out.println("Enter your password: ");
+            String password = scanner.nextLine();
+            boolean isAdmin = false;
+            if (username.equals("admin") && password.equals("admin")) {
+                isAdmin = true;
+            }
+            if (isAdmin) {
+                System.out.println("Welcome, Admin!");
+            } else {
+                System.out.println("Welcome, User!");
+            }
+            System.out.println("Do you want to try again? (y/n)");
+            String answer = scanner.nextLine();
+            if (answer.equals("n")) {
+                isLoggedIn = true;
+            }
+        }
+        return !isLoggedIn;
+    }
+
+    static void home() {
+        System.out.println("You are now back at home.");
+    }
+}
