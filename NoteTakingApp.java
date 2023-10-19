@@ -151,9 +151,17 @@ public class NoteTakingRegistrationWithOTP {
 
    static void createNotes(){// Webster your task is here 
         // Fill this function with working code to create notes remember we are storing the data in a collection
+       Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your note:");
+        String note = scanner.nextLine();
+        notes.add(note);
+        System.out.println("Note Created!");
    }
 
    static void readNotes(){ // Webster here again}
+      System.out.println("Your Notes:");
+        for (int i = 0; i < notes.size(); i++) {
+            System.out.println((i + 1) + ". " + notes.get(i));
 
    static void updateNotes(){// Paul your task is here
         // Fill this function with working code
