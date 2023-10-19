@@ -2,6 +2,9 @@
   import java.util.Random;
 import java.util.Scanner;
 import java.util.InputMismatchException;
+import org.mindrot.jbcrypt.BCrypt;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 class NoteTakingApp{
     public static void main(String[] Args){
@@ -38,45 +41,44 @@ class NoteTakingApp{
 
       // Monde your work is what to do after the user logs in,, you have to check if the user is an admin or a normal user
     }
- 
 
-public class NoteTakingRegistrationWithOTP {
+public class SecureUserRegistration {
+    static class User {
+        String username;
+        String email;
+        String hashedPassword;
+
+        public User(String username, String email, String hashedPassword) {
+            this.username = username;
+            this.email = email;
+            this.hashedPassword = hashedPassword;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        ArrayList<User> users = new ArrayList<>();
 
         while (true) {
             System.out.println("1. Register");
             System.out.println("2. Exit");
             System.out.print("Choose an option: ");
-
-            int choice = getUserChoice(scanner);
+            int choice = scanner.nextInt();
 
             switch (choice) {
                 case 1:
-                    registerUser(scanner);
+                    registerUser(scanner, users);
                     break;
                 case 2:
                     System.out.println("Exiting registration.");
                     System.exit(0);
-                    break;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
         }
     }
 
-    private static int getUserChoice(Scanner scanner) {
-        while (true) {
-            try {
-                return scanner.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a number (1 or 2).");
-                scanner.nextLine(); // Consume the invalid input
-            }
-        }
-    }
-
-    private static void registerUser(Scanner scanner) {
+    private static void registerUser(Scanner scanner, ArrayList<User> users) {
         System.out.print("Enter a username: ");
         String username = scanner.next();
         System.out.print("Enter an email address: ");
@@ -84,39 +86,46 @@ public class NoteTakingRegistrationWithOTP {
         System.out.print("Enter a password: ");
         String password = scanner.next();
 
-        // Simulate sending an OTP code via email
-        int otpCode = generateOTP();
-        System.out.println("An OTP code has been sent to your email.");
-
-        // Simulate user input of the OTP code
-        System.out.print("Enter the OTP code: ");
-        int userEnteredOTP = getUserChoice(scanner);
-
-        if (userEnteredOTP == otpCode) {
-            // You should implement a method to store the user information in your data storage system.
-            boolean registrationSuccess = storeUserInformation(username, email, password);
-
-            if (registrationSuccess) {
-                System.out.println("Registration successful!");
-            } else {
-                System.out.println("Registration failed. Please try a different username or email.");
-            }
+        if (isUserExists(users, username, email)) {
+            System.out.println("Registration failed. Username or email already exists.");
+        } else if (!isEmailValid(email) || !isPasswordStrong(password)) {
+            System.out.println("Registration failed. Invalid email or weak password.");
         } else {
-            System.out.println("OTP verification failed. Please enter the correct OTP code.");
+            // Hash the password before storing it
+            String hashedPassword = hashPassword(password);
+            User newUser = new User(username, email, hashedPassword);
+            users.add(newUser);
+            System.out.println("Registration successful!");
+            // Send email verification code (not implemented in this example).
         }
     }
 
-    private static int generateOTP() {
-        // Simulate OTP code generation (a random 6-digit number)
-        return 100000 + new Random().nextInt(900000);
+    private static boolean isUserExists(ArrayList<User> users, String username, String email) {
+        for (User user : users) {
+            if (user.username.equals(username) || user.email.equals(email)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private static boolean storeUserInformation(String username, String email, String password) {
-        // In a real application, you would save user information to your database.
-        // For this example, we simply return true to simulate success.
-        return true;
+    private static boolean isEmailValid(String email) {
+        // Use a regular expression for email validation
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return Pattern.matches(emailRegex, email);
+    }
+
+    private static boolean isPasswordStrong(String password) {
+        // Implement password strength criteria (e.g., minimum length, special characters)
+        return password.length() >= 8 && password.matches(".*[!@#$%^&*].*");
+    }
+
+    private static String hashPassword(String password) {
+        // Use BCrypt to hash the password
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 }
+
   static void home(){// This was my task "Muhammadi Bwengo" 
       boolean homeLoop = true;
       Scanner scanner = new Scanner(System.in);
