@@ -172,8 +172,32 @@ public class SecureUserRegistration {
         for (int i = 0; i < notes.size(); i++) {
             System.out.println((i + 1) + ". " + notes.get(i));
 
-   static void updateNotes(){// Paul your task is here
+   static void updateNotes(){ // Paul your task is here
         // Fill this function with working code
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the note you want to update: ");
+        String noteToUpdate = scanner.nextLine(); // Assuming you are updating based on the content of the note.
+        Map<Integer, String> sampleMap = new HashMap<>();
+        // Add some sample notes to the map
+        sampleMap.put(1, "Sample Note 1");
+        sampleMap.put(2, "Sample Note 2");
+        // Update the note
+        if (sampleMap.containsValue(noteToUpdate)) {
+            for (Map.Entry<Integer, String> entry : sampleMap.entrySet()) {
+                if (entry.getValue().equals(noteToUpdate)) {
+                    System.out.println("Enter the updated note: ");
+                    String updatedNote = scanner.nextLine();
+                    sampleMap.put(entry.getKey(), updatedNote);
+                    System.out.println("Note updated successfully!");
+                    break;
+                }
+            }
+        } else {
+            System.out.println("Note not found!");
+        }
+    }
+
+}
    }
    
    static void adminPanel(){ //Ntala your task is here
