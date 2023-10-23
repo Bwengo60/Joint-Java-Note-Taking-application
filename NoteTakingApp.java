@@ -1,5 +1,6 @@
 
-  import java.util.Random;
+
+import java.util.Random;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import org.mindrot.jbcrypt.BCrypt;
@@ -199,11 +200,70 @@ public class SecureUserRegistration {
 
 }
    }
-   
-   static void adminPanel(){ //Ntala your task is here
-       // fill this function
-   }
-   
+
+    static void adminPanel() { //Ntala your task is here
+        boolean adminLoop = true;
+        Scanner scanner = new Scanner(System.in);
+
+        while (adminLoop) {
+            System.out.println("Admin Panel\n\n1. View Users\n2. Promote User to Admin\n3. Demote Admin to User\n4. Exit Admin Panel");
+            String adminChoice = scanner.nextLine();
+
+            switch (adminChoice) {
+                case "1":
+                    viewUsers(users);
+                    break;
+                case "2":
+                    promoteUserToAdmin(users);
+                    break;
+                case "3":
+                    demoteAdminToUser(users);
+                    break;
+                case "4":
+                    adminLoop = false;
+                    break;
+                default:
+                    System.out.println("Please enter a valid command.");
+            }
+        }
+    }
+
+    static void viewUsers(ArrayList<User> users) {
+        System.out.println("User List:");
+        for (User user : users) {
+            System.out.println("Username: " + user.username + " | Email: " + user.email + " | Role: " + (user.isAdmin ? "Admin" : "User"));
+        }
+    }
+
+    static void promoteUserToAdmin(ArrayList<User> users) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the username of the user to promote to admin: ");
+        String username = scanner.nextLine();
+
+        for (User user : users) {
+            if (user.username.equals(username)) {
+                user.isAdmin = true;
+                System.out.println("User " + username + " has been promoted to admin.");
+                return;
+            }
+        }
+        System.out.println("User not found.");
+    }
+
+    static void demoteAdminToUser(ArrayList<User> users) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the username of the admin to demote to user: ");
+        String username = scanner.nextLine();
+
+        for (User user : users) {
+            if (user.username.equals(username) && user.isAdmin) {
+                user.isAdmin = false;
+                System.out.println("Admin " + username + " has been demoted to a user.");
+                return;
+            }
+        }
+        System.out.println("Admin not found.");
+    }
+
    
 }
-
